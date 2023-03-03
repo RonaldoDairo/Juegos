@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+
+        body{
+            background-image: url(/img/elarca.jpg);
+        }
+         #div1{
+            width: 29rem;
+            height: 70px;
+            padding: 10px;
+            border: 1px solid #aaaaaa;
+            margin-top: 20rem;
+            margin-left: 15.5rem;
+        }
+
+        .contimag{
+            display: flex;
+            flex-direction: row;
+             margin-left: 16rem;
+        }
+        #leon{
+           padding: 4px;
+        }
+        #oso{
+           padding: 4px;
+        }
+        #perro{
+           padding: 4px;
+        }
+        #gato{
+           padding: 4px;
+        }
+    </style>
+    <script>
+          function allowDrop(ev) {//permite hacer el 'soltar' em el <div>
+                                    //sobre el que es llamado con ondragOver
+                    ev.preventDefault();//como por defecto un elemento no puede ser dropped,
+                                        //tenemos que evitar este comportamiento por defecto para que si se pueda dropear 
+                
+            }
+            function drag(ev) {//llamamos cuando empezamos a arrastrar, es llamada en el evento
+                                //ondragstart de la <img>
+                ev.dataTransfer.setData("id_1", ev.target.id);
+                //evt.target=> referencia la etiqueta sobre la que llamamos a esta funcion (<img>)
+           
+            }
+            function drop(ev) {
+                    ev.preventDefault();//evita el comportamiento por defecto , por si por ejemplo
+                    // arrastramos un link que no le interpete y lo abra en el browser
+                
+                
+                    let data = ev.dataTransfer.getData("id_1");
+                   // la otra es opcion es con una variable let x==1
+                   //if (x==2) en este caso como es diferente lo devuelve  
+    /* esta en una condicion para que devuelva*/
+                    leon = 'leon';
+                    oso = 'oso';
+                    perro = 'perro';
+                    gato = 'gato';
+                
+                if ( data === leon ||data ==='oso' ){
+                    ev.target.appendChild(document.getElementById(data));
+                  //  alert(data)
+                }  // if ( !data === 'perro'|| !data === 'gato'){
+                   // ev.target.appendChild(document.getElementById(data));
+               // }
+               if ( !data === gato || !data === perro ){
+                    ev.target.appendChild(document.getElementById(data));
+                  //  alert(data)
+                } 
+                 else 
+                 console.log('no se pudo');
+                    //data representa la id de la <img> que vamos a transferir 
+                    //ev.targe referencia la etiqueta sobre la que llamamos a esta funcion (<div>)
+                    }
+    </script>
+</head>
+<body>
+    <div id="div1"ondrop="drop(event)"
+    ondragover="allowDrop(event)" >
+      <!--el div tiene que se droppable ... --> 
+   </div>
+   <br>
+<div class="contimag">
+   <img id="leon" src="img/leon.jpg"
+   draggable="true" 
+   ondragstart="drag(event)"
+   width="108"
+   height="75"><br><br>
+   <img id="oso" src="img/oso.jpeg"
+   draggable="true" 
+   ondragstart="drag(event)"
+   width="108"
+   height="75"><br><br>
+   <img id="perro" src="img/perro.png"
+   draggable="true" 
+   ondragstart="drag(event)"
+   width="108"
+   height="75"><br><br>
+   <img id="gato" src="img/gatio.jpg"
+   draggable="true" 
+   ondragstart="drag(event)"
+   width="108"
+   height="75">
+    </div>
+</body>
+</html>

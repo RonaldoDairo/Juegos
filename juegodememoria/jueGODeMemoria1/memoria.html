@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memoria</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+     <style>
+        :root{
+            --w: calc(70vw/6);
+            --h: calc(70vh/4);
+        }
+        *{
+            transition: all 0.5s;
+        }
+        body{
+            padding: 0;
+            margin: 0;
+            -webkit-perspective: 1000;
+            background-color: powderblue;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            text-align: center;
+        }
+        div{display: inline-block;}
+        .area-tarjeta, 
+        .tarjeta, 
+        .cara {
+                cursor: pointer;
+                width: var(--w);
+                min-width: 100px;
+                height: var(--h);
+        }
+       
+        
+        .tarjeta{
+            position: relative;
+            transform-style: preserve-3d;
+            animation: iniciar 5s;
+        }
+      /*  <!--esto es para que las caras no se volteen-->*/
+      /*  .area-tarjeta:hover .tarjeta{
+            transform: rotateY(180deg);
+        }*/
+        .cara{
+           
+            position: absolute;
+            backface-visibility: hidden;
+            box-shadow: inset 0 0 0 5px white;
+            font-size: 500%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+         .trasera{
+            background-color: lightcyan;
+            transform: rotateY(180deg);
+        }
+        .superior{
+            background: linear-gradient(orange,darkorange);
+        }
+        .nuevo-juego{
+            cursor: pointer;
+            background: linear-gradient(orange,darkorange);
+            padding: 20px;
+            border-radius: 50px;
+            border: white 5px solid;
+            font-size: 130%;
+        }
+
+        @keyframes iniciar {
+            20%,90%{
+                transform: rotateY(180deg);
+            }
+            0%,100% {
+            transform: rotateY(0deg);
+            }
+        }
+
+     </style>
+</head>
+<body>
+        <div id="tablero">
+        </div>
+        <br>
+        <div class="nuevo-juego" onclick="generarTablero()">
+            Nuevo Juego
+        </div>
+        <script>
+            let iconos
+            function cargarIconos() {
+                
+            }
+            function cargarIconos() {
+                iconos = [
+                    ' <i class="fa-brands fa-twitter"></i>',
+                    ' <i class="fa-brands fa-instagram"></i>',
+                    ' <i class="fa-brands fa-tiktok"></i>',
+                    ' <i class="fa-brands fa-wordpress"></i>',
+                    ' <i class="fa-brands fa-facebook"></i>',
+                    ' <i class="fa-brands fa-google"></i>',
+                    ' <i class="fa-brands fa-linkedin"></i>',
+                    ' <i class="fa-brands fa-stack-overflow"></i>',
+                    ' <i class="fa-solid fa-wifi"></i>',
+                    ' <i class="fa-brands fa-youtube"></i>',
+                    ' <i class="fa-brands fa-whatsapp"></i>',
+                    ' <i class="fa-brands fa-windows"></i>',
+                ]
+            }
+
+
+            function generarTablero() {
+                cargarIconos()
+                selecciones = []
+                let tablero = document.getElementById("tablero")
+                let tarjeta = []
+                for (let i = 0; i < 24; i++) {
+                    tarjeta.push(`
+                        <div class="area-tarjeta" onclick="seleccionarTarjeta(${i})">
+                    <div class="tarjeta" id="tarjeta${i}">
+                        <div class="cara trasera" id="trasera${i}"> 
+                            ${iconos[0]} 
+                        </div>
+                        <div class="cara superior">
+                            <i class="fa-sharp fa-solid fa-question"></i>
+                        </div>
+                    </div>
+                </div>
+                    `)  
+                     if (i % 2 == 1){
+                            iconos.splice(0, 1)
+                    }
+                }
+                tarjeta.sort(() => Math.random() - 0.5)
+                tablero.innerHTML = tarjeta.join(" ")
+            }
+            let selecciones =[]
+            function seleccionarTarjeta(i) {
+                let tarjeta = document.getElementById("tarjeta" + i) 
+                if(tarjeta.style.transform != "rotateY(180deg)"){
+                    tarjeta.style.transform = "rotateY(180deg)"
+                    selecciones.push(i)
+                }
+                if (selecciones.length == 2){
+                    deseleccionar(selecciones)
+                    selecciones = []
+                }
+            }
+            function deseleccionar(selecciones) {
+                setTimeout(() =>{
+                    
+                    let trasera1 = document.getElementById("trasera" + selecciones[0])
+                    let trasera2 = document.getElementById("trasera" + selecciones[1])
+                    if(trasera1.innerHTML != trasera2.innerHTML){
+                        let tarjeta1 = document.getElementById("tarjeta" + selecciones[0])
+                        let tarjeta2 = document.getElementById("tarjeta" + selecciones[1])
+                        tarjeta1.style.transform = "rotateY(0deg)"
+                        tarjeta2.style.transform = "rotateY(0deg)"
+                    }else{
+                        trasera1.style.background = "plum"
+                        trasera2.style.background = "plum"
+                    }
+                },1000)
+                
+            }
+        </script>
+</body>
+</html>
